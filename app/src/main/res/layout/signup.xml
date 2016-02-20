@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    android:background="@color/holo_blue"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SIGN UP"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:textColor="#ffffff" />
+
+    <EditText
+        android:id="@+id/editname"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:gravity="center"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/editmail"
+        android:layout_alignStart="@+id/editmail"
+        android:layout_marginTop="25dp"
+        />
+
+    <EditText
+        android:id="@+id/editpass"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:gravity="center"
+        android:layout_below="@+id/editmail"
+        android:layout_alignLeft="@+id/editmail"
+        android:layout_alignStart="@+id/editmail"
+        />
+
+    <EditText
+        android:id="@+id/editmail"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="E-mail"
+        android:gravity="center"
+        android:layout_below="@+id/editname"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/holo_green"
+        android:text="SIGN UP"
+        android:layout_below="@+id/editpass"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="29dp" />
+
+
+</RelativeLayout>
