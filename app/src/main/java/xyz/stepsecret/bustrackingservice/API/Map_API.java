@@ -26,6 +26,7 @@ import xyz.stepsecret.bustrackingservice.Model.Map_Model;
                          @Field("EV_name") String EV_name,
                          @Field("flow") String flow,
                          @Field("status") String status,
+                         @Field("state") int state,
                          Callback<Map_Model> response);
     }
 

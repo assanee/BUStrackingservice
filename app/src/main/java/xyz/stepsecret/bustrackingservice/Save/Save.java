@@ -1,5 +1,7 @@
 package xyz.stepsecret.bustrackingservice.Save;
 
+import android.util.Log;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,17 +39,19 @@ public class Save {
                 Map.tinydb.getString("userName"),
                 Map.tinydb.getString("flow"),
                 "RUN",
+                Map.State,
                 new Callback<Map_Model>() {
                     @Override
                     public void success(Map_Model map_Model, Response response) {
 
                         String Check_error = map_Model.getError();
-
+                        Log.e("TAG", "success RUN : "+map_Model.getMessage());
                         if (Check_error.equals("false")) {
 
 
                         } else {
 
+                            Log.e("TAG", "success RUN Check_error : "+Check_error);
                             SaveNew();
                         }
 
@@ -56,6 +60,7 @@ public class Save {
                     @Override
                     public void failure(RetrofitError error) {
 
+                        Log.e("TAG", "failure RUN : ");
                         SaveNew();
 
                     }
@@ -86,16 +91,17 @@ public class Save {
                 Map.tinydb.getString("userName"),
                 Map.tinydb.getString("flow"),
                 "STOP",
+                Map.State,
                 new Callback<Map_Model>() {
                     @Override
                     public void success(Map_Model map_Model, Response response) {
 
                         String Check_error = map_Model.getError();
-
+                        Log.e("TAG", "success STOP : "+map_Model.getMessage());
                         if (Check_error.equals("false")) {
 
                         } else {
-
+                            Log.e("TAG", "success STOP Check_error : "+Check_error);
                             SaveStop();
                         }
 
@@ -104,7 +110,7 @@ public class Save {
                     @Override
                     public void failure(RetrofitError error) {
 
-
+                        Log.e("TAG", "failure STOP : ");
                         SaveStop();
 
                     }

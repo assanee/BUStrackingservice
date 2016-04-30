@@ -64,7 +64,7 @@ public class WaypiontData {
         {
             if(Math.abs(Map.State - WaypiontData.State[i]) == 1 || Math.abs(Map.State - State[i]) == 0)
             {
-                Log.e("TAG", "State : " + State + " ; " + Math.abs(Map.State - State[i]));
+                //Log.e("TAG", "State : " + State[i] + " ; " + Math.abs(Map.State - State[i]));
 
                 Cal_Distance = calculate_Distance_Nearest_Neighbors(latitude[i], longitude[i],location.getLatitude(),location.getLongitude());
 
