@@ -20,7 +20,7 @@ public class Save {
 
         Map.TVEV.setText("EV : "+ Map.tinydb.getString("userName"));
         Map.TVflow.setText("flow : "+Map.tinydb.getString("flow"));
-        Map.TVStatus.setText("Status : STOP");
+        Map.TVStatus.setText("Status : RUN");
         Map.TVLatitude.setText("Latitude : "+Map.mLastLocation.getLatitude()+"");
         Map.TVLongitude.setText("Longitude : "+Map.mLastLocation.getLongitude()+"");
         Map.TVRound.setText("Round : "+Map.tinydb.getInt("round", 1));

@@ -153,16 +153,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
         //btnStartLocationUpdates = (CustomView) findViewById(R.id.button3);
 
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-
-                WaypiontData.GetWaypiont();
-
-            }
-        });
 
 
         findViewById(R.id.btn_Setting).setOnClickListener(new View.OnClickListener() {
