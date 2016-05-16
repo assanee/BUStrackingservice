@@ -1,8 +1,10 @@
 package xyz.stepsecret.bustrackingservice;
 
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.location.Location;
@@ -30,6 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit.RestAdapter;
@@ -38,12 +44,14 @@ import xyz.stepsecret.bustrackingservice.Flow.Flow;
 import xyz.stepsecret.bustrackingservice.Save.Save;
 import xyz.stepsecret.bustrackingservice.Waypiont.WaypiontData;
 import xyz.stepsecret.bustrackingservice.TinyDB.TinyDB;
+import android.Manifest;
+
 
 /**
  * Created by Assanee on 8/7/2558.
  */
 public class Map extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener,GoogleMap.OnMapLongClickListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapLongClickListener {
 
     public static TinyDB tinydb;
 
@@ -63,9 +71,9 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     private LocationRequest mLocationRequest;
 
     // Location updates intervals in sec
-    private static int UPDATE_INTERVAL = 3000; // 3 sec
-    private static int FATEST_INTERVAL = 3000; // 3 sec
-    private static int DISPLACEMENT = 10; // 10 meters
+    private static int UPDATE_INTERVAL = 1000; // 3 sec
+    private static int FATEST_INTERVAL = 1000; // 3 sec
+    private static int DISPLACEMENT = 5; // 10 meters
 
     // UI elements
 
@@ -95,7 +103,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     private ToggleButton Start_Stop;
     private Button btn_Setting1;
 
-    public static TextView TVEV,TVflow,TVState,TVLatitude,TVLongitude,TVSpeed,TVStatus,TVMode,TVRound;
+    public static TextView TVEV, TVflow, TVState, TVLatitude, TVLongitude, TVSpeed, TVStatus, TVMode, TVRound;
 
     public SweetAlertDialog pDialog;
 
@@ -105,6 +113,8 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         setContentView(R.layout.map);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -154,8 +164,6 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         //btnStartLocationUpdates = (CustomView) findViewById(R.id.button3);
 
 
-
-
         findViewById(R.id.btn_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +177,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
         btn_Setting1 = (Button) findViewById(R.id.btn_Setting);
 
-        Start_Stop = (ToggleButton)findViewById(R.id.toggleButton1);
+        Start_Stop = (ToggleButton) findViewById(R.id.toggleButton1);
         Start_Stop.setChecked(true);
         Start_Stop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
@@ -208,9 +216,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     }
 
 
-
-    public void AUTO()
-    {
+    public void AUTO() {
         TVMode.setText("Mode : AUTO");
 
         Toast.makeText(getApplicationContext(), "AUTO",
@@ -226,9 +232,8 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
                 State = 0;
 
-                int round = tinydb.getInt("round",0)+1;
+                int round = tinydb.getInt("round", 0) + 1;
                 tinydb.putInt("round", round);
-
 
 
                 togglePeriodicLocationUpdates();
@@ -250,12 +255,9 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
             mGoogleApiClient.connect();
         }
 
-        if(tinydb.getBoolean("AUTO", false))
-        {
+        if (tinydb.getBoolean("AUTO", false)) {
             AUTO();
-        }
-        else
-        {
+        } else {
             Start_Stop.setEnabled(true);
 
         }
@@ -270,21 +272,16 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         // Resuming the periodic location updates
         if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
 
-            if(Check_press_start)
-            {
+            if (Check_press_start) {
                 startLocationUpdates();
                 Toast.makeText(getApplicationContext(), "resume 1",
                         Toast.LENGTH_SHORT).show();
 
-            }
-            else if(tinydb.getBoolean("AUTO",false))
-            {
+            } else if (tinydb.getBoolean("AUTO", false)) {
                 Toast.makeText(getApplicationContext(), "resume 2",
                         Toast.LENGTH_SHORT).show();
                 AUTO();
-            }
-            else
-            {
+            } else {
                 Toast.makeText(getApplicationContext(), "resume 3",
                         Toast.LENGTH_SHORT).show();
                 Start_Stop.setEnabled(true);
@@ -303,6 +300,8 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        Toast.makeText(getApplicationContext(), "onStop!",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -313,7 +312,6 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
                 Toast.LENGTH_SHORT).show();
 
     }
-
 
 
     /**
@@ -327,12 +325,9 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
             mRequestingLocationUpdates = true;
 
             // Starting the location updates
-            if(Check_press_start)
-            {
+            if (Check_press_start) {
                 startLocationUpdates();
-            }
-            else if(tinydb.getBoolean("AUTO",false))
-            {
+            } else if (tinydb.getBoolean("AUTO", false)) {
                 startLocationUpdates();
             }
 
@@ -340,7 +335,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
         } else {
             // Changing the button text
-           // btnStartLocationUpdates.setText("START");
+            // btnStartLocationUpdates.setText("START");
 
             mRequestingLocationUpdates = false;
 
@@ -398,6 +393,16 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
      * */
     protected void startLocationUpdates() {
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
 
