@@ -73,7 +73,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 1000; // 3 sec
     private static int FATEST_INTERVAL = 1000; // 3 sec
-    private static int DISPLACEMENT = 5; // 10 meters
+    private static int DISPLACEMENT = 5; // 5 meters
 
     // UI elements
 
@@ -103,9 +103,13 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     private ToggleButton Start_Stop;
     private Button btn_Setting1;
 
-    public static TextView TVEV, TVflow, TVState, TVLatitude, TVLongitude, TVSpeed, TVStatus, TVMode, TVRound;
+    //public static TextView TVEV, TVflow, TVState, TVLatitude, TVLongitude, TVSpeed, TVStatus, TVMode, TVRound;
+
+    public static TextView TVDistance, TVflow;
 
     public SweetAlertDialog pDialog;
+
+    private SpeedometerGauge speedometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +134,27 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
         tinydb = new TinyDB(getApplicationContext());
 
-        TVEV = (TextView) findViewById(R.id.EV);
+        speedometer = (SpeedometerGauge) findViewById(R.id.speedometer);
+        speedometer.setMaxSpeed(50);
+        speedometer.setLabelConverter(new SpeedometerGauge.LabelConverter() {
+            @Override
+            public String getLabelFor(double progress, double maxProgress) {
+                return String.valueOf((int) Math.round(progress));
+            }
+        });
+        speedometer.setMaxSpeed(90);
+        speedometer.setMajorTickStep(5);
+        speedometer.setMinorTicks(4);
+        speedometer.addColoredRange(0, 30, Color.GREEN);
+        speedometer.addColoredRange(30, 45, Color.YELLOW);
+        speedometer.addColoredRange(45, 90, Color.RED);
+        speedometer.setSpeed(0);
+
+        TVDistance = (TextView) findViewById(R.id.Distance);
+        TVflow = (TextView) findViewById(R.id.Flow);
+        TVflow.setText(tinydb.getString("flow"));
+
+        /*TVEV = (TextView) findViewById(R.id.EV);
         TVflow = (TextView) findViewById(R.id.flow);
         TVState = (TextView) findViewById(R.id.State);
         TVLatitude = (TextView) findViewById(R.id.Latitude);
@@ -139,7 +163,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         TVStatus = (TextView) findViewById(R.id.Status);
         TVMode = (TextView) findViewById(R.id.Mode);
         TVRound = (TextView) findViewById(R.id.Round);
-
+*/
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("Loading");
@@ -181,6 +205,9 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
         Start_Stop.setChecked(true);
         Start_Stop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+
+                TVflow.setText(tinydb.getString("flow"));
+
                 if (!arg1) {
                     Check_press_start = true;
 
@@ -188,7 +215,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
                     State = 0;
 
-                    TVState.setText("State : " + State);
+                    //TVState.setText("State : " + State);
 
                     int round = tinydb.getInt("round", 0) + 1;
                     tinydb.putInt("round", round);
@@ -217,7 +244,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
 
 
     public void AUTO() {
-        TVMode.setText("Mode : AUTO");
+       // TVMode.setText("Mode : AUTO");
 
         Toast.makeText(getApplicationContext(), "AUTO",
                 Toast.LENGTH_SHORT).show();
@@ -444,15 +471,20 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     @Override
     public void onLocationChanged(Location location) {
 
+        Double Tempspeed = location.getSpeed()*3.6;
+
+        speedometer.setSpeed(Tempspeed);
+
+
         if(tinydb.getBoolean("AUTO", false))
         {
-            TVMode.setText("Mode : AUTO");
+           // TVMode.setText("Mode : AUTO");
 
                 Flow.flow_AUTO(location);
         }
         else
         {
-            TVMode.setText("Mode : Manual");
+           // TVMode.setText("Mode : Manual");
 
                 Flow.flow_manual(location);
 

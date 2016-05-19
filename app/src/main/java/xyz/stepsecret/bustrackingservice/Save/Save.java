@@ -18,7 +18,7 @@ public class Save {
     public static void SaveNew()
     {
 
-        Map.TVEV.setText("EV : "+ Map.tinydb.getString("userName"));
+       /* Map.TVEV.setText("EV : "+ Map.tinydb.getString("userName"));
         Map.TVflow.setText("flow : "+Map.tinydb.getString("flow"));
         Map.TVStatus.setText("Status : RUN");
         Map.TVLatitude.setText("Latitude : "+Map.mLastLocation.getLatitude()+"");
@@ -26,7 +26,7 @@ public class Save {
         Map.TVRound.setText("Round : "+Map.tinydb.getInt("round", 1));
         Map.TVSpeed.setText("Speed : "+Map.mLastLocation.getSpeed());
         Map.TVState.setText("State : "+Map.State);
-
+        */
         final Map_API map_API = Map.restAdapter.create(Map_API.class);
 
 
@@ -70,7 +70,7 @@ public class Save {
     public static void SaveStop()
     {
 
-        Map.TVEV.setText("EV : "+ Map.tinydb.getString("userName"));
+        /*Map.TVEV.setText("EV : "+ Map.tinydb.getString("userName"));
         Map.TVflow.setText("flow : "+Map.tinydb.getString("flow"));
         Map.TVStatus.setText("Status : STOP");
         Map.TVLatitude.setText("Latitude : "+Map.mLastLocation.getLatitude()+"");
@@ -78,7 +78,7 @@ public class Save {
         Map.TVRound.setText("Round : "+Map.tinydb.getInt("round", 1));
         Map.TVSpeed.setText("Speed : "+Map.mLastLocation.getSpeed());
         Map.TVState.setText("State : "+Map.State);
-
+*/
         final Map_API map_API = Map.restAdapter.create(Map_API.class);
 
 

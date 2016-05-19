@@ -40,6 +40,8 @@ public class Flow {
 
             Map.DISTANCE = WaypiontData.distance[i];
 
+            Map.TVDistance.setText(WaypiontData.distance[i].toString()+" M.");
+
             if(Map.check_first == false)
             {
                 first_lat = location.getLatitude();
@@ -143,6 +145,8 @@ public class Flow {
         Map.mLastLocation = location;
 
         Map.DISTANCE = WaypiontData.distance[i];
+
+        Map.TVDistance.setText(WaypiontData.distance[i].toString()+" M.");
 
         if(Map.check_first == false)
         {
