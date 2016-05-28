@@ -73,7 +73,7 @@ public class Map extends FragmentActivity implements GoogleApiClient.ConnectionC
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 1000; // 3 sec
     private static int FATEST_INTERVAL = 1000; // 3 sec
-    private static int DISPLACEMENT = 5; // 5 meters
+    private static int DISPLACEMENT = 3; // 2 meters
 
     // UI elements
 
